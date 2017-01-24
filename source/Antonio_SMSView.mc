@@ -1,9 +1,11 @@
 using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
+using Toybox.Communications as Comm;
+var name, msg;
 
 class Antonio_SMSView extends Ui.View {
-
+	
     function initialize() {
         View.initialize();
     }
@@ -34,42 +36,77 @@ class Antonio_SMSView extends Ui.View {
 }
 
 
-class MyInputDelegate extends Ui.BehaviorDelegate {
-
+class NameInputDelegate extends Ui.BehaviorDelegate {
+	
 	function initialize() {
-        Sys.println("Antonio - initialize");
-        BehaviorDelegate.initialize();
+		BehaviorDelegate.initialize();
     }
     
 	function onSelect() {
         Sys.println("Antonio - onSelect");
-        var factory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_MEDIUM});
+        var factory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
 		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"SMS Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
 			:pattern=>[factory],
 			:defaults=>[0]}),
-			new MyPickerDelegate(),
+			new NamePickerDelegate(),
 			Ui.SLIDE_UP);
+		return true;
+	}
+}
+
+class NamePickerDelegate extends Ui.PickerDelegate {
+
+	function onAccept(values) {
+        Sys.println("Antonio - onAcceptN");
+		for(var i = 0; i < values.size(); i++) { name = values[i]; Sys.println(name); }
+        var factory = new WordFactory(["Yes", "No"          ], {:font=>Gfx.FONT_LARGE}); 
+		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"SMS Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
+			:pattern=>[factory],
+			:defaults=>[0]}),
+			new RespPickerDelegate(),
+			Ui.SLIDE_UP);		
 		return true;
 	}
 	
 	function onCancel() {
-        Ui.popView(Ui.SLIDE_IMMEDIATE);
-    }
-}
-
-class MyPickerDelegate extends Ui.PickerDelegate {
-
-	function onAccept(values) {
-		for(var i = 0; i < values.size(); i++) {
-			Sys.println(values[i]);
-		}
+        Sys.println("Antonio - onCancelN");
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
-
-	function onCancel( ) { return true; }
 }
 
+class RespPickerDelegate extends Ui.PickerDelegate {
+
+	function onAccept(values) {
+        Sys.println("Antonio - onAcceptR");
+		for(var i = 0; i < values.size(); i++) { msg = values[i]; Sys.println(msg); }
+		Sys.println("Antonio - To: " + name + "; Msg: " + msg);
+		Comm.makeWebRequest("http://sms_test", {}, {}, method(:onSMSReceive));
+		
+		Ui.popView(Ui.SLIDE_DOWN);
+		Ui.popView(Ui.SLIDE_DOWN);
+		return true;
+	}
+	
+	function onCancel() {
+        Sys.println("Antonio - onCancelR");
+		Ui.popView(Ui.SLIDE_DOWN);
+		Ui.popView(Ui.SLIDE_DOWN);
+		return true;
+	}
+	
+    function onSMSReceive(responseCode, data) {
+        Sys.println("Antonio - onSMSReceive");
+        if (responseCode == 200) {
+        	Sys.println("Stock response data: " + data);
+        }
+        requestUpdate();
+    }	
+}
+
+//////////////////////////
+// Generate WordFactory
+//////////////////////////
 class WordFactory extends Ui.PickerFactory {
     var mWords;
     var mFont;

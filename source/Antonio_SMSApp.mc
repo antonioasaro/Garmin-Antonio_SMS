@@ -16,7 +16,7 @@ class Antonio_SMSApp extends App.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new Antonio_SMSView(), new MyInputDelegate() ];
+        return [ new Antonio_SMSView(), new NameInputDelegate() ];
     }
 
 }

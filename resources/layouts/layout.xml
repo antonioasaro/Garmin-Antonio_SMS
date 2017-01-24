@@ -1,3 +1,5 @@
 <layout id="MainLayout">
-    <bitmap id="id_sms" x="center" y="center" filename="../drawables/sms-color.png" />
+    <bitmap x="center" y="center" id="id_sms"  filename="../drawables/sms-color.png" />
+    <label  x="140"    y="90"     id="id_to"   font="Gfx.FONT_XTINY" text="To:"  justification="Gfx.TEXT_JUSTIFY_LEFT"></label>
+    <label  x="140"    y="106"    id="id_msg"  font="Gfx.FONT_XTINY" text="Msg:" justification="Gfx.TEXT_JUSTIFY_LEFT"></label>
 </layout>
