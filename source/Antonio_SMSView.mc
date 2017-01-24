@@ -32,32 +32,7 @@ class Antonio_SMSView extends Ui.View {
     function onHide() {
     }
 }
-    
-class MyNumberFactory extends Ui.PickerFactory {
 
-    function getDrawable(item, isSelected) {
-    	return new Ui.Text({:text=>item.toString(),
-		:color=>Gfx.COLOR_WHITE,
-		:font=>Gfx.FONT_NUMBER_THAI_HOT,
-		:justification=>Gfx.TEXT_JUSTIFY_LEFT});
-	}
-		
-	function getSize() { return 10; }
-	function getValue(item) { return item;}
-}
-
-class MyPickerDelegate extends Ui.PickerDelegate {
-
-	function onAccept(values) {
-		for(var i = 0; i< values.size(); i++) {
-			Sys.println(values[i]);
-		}
-		Ui.popView(Ui.SLIDE_DOWN);
-		return true;
-	}
-
-	function onCancel( ) { return true; }
-}
 
 class MyInputDelegate extends Ui.BehaviorDelegate {
 
@@ -68,11 +43,67 @@ class MyInputDelegate extends Ui.BehaviorDelegate {
     
 	function onSelect() {
         Sys.println("Antonio - onSelect");
-		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Picker"}),
-			:pattern=>[new MyNumberFactory()],
+        var factory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_MEDIUM});
+		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"SMS Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
+			:pattern=>[factory],
 			:defaults=>[0]}),
 			new MyPickerDelegate(),
-			Ui.SLIDE_UP );
+			Ui.SLIDE_UP);
 		return true;
 	}
+	
+	function onCancel() {
+        Ui.popView(Ui.SLIDE_IMMEDIATE);
+    }
+}
+
+class MyPickerDelegate extends Ui.PickerDelegate {
+
+	function onAccept(values) {
+		for(var i = 0; i < values.size(); i++) {
+			Sys.println(values[i]);
+		}
+		Ui.popView(Ui.SLIDE_DOWN);
+		return true;
+	}
+
+	function onCancel( ) { return true; }
+}
+
+class WordFactory extends Ui.PickerFactory {
+    var mWords;
+    var mFont;
+
+    function initialize(words, options) {
+        PickerFactory.initialize();
+
+        mWords = words;
+        if (options != null) { mFont = options.get(:font); }
+        if (mFont == null)   { mFont = Gfx.FONT_LARGE; }
+    }
+
+    function getIndex(value) {
+        if (value instanceof String) {
+            for(var i = 0; i < mWords.size(); ++i) {
+                if(value.equals(Ui.loadResource(mWords[i]))) { return i; }
+            }
+        } else {
+            for (var i = 0; i < mWords.size(); ++i) {
+                if (mWords[i].equals(value)) { return i; }
+            }
+        }
+        return 0;
+    }
+
+    function getSize() {
+        return mWords.size();
+    }
+
+    function getValue(index) {
+        return mWords[index];
+    }
+
+    function getDrawable(index, selected) {
+        return new Ui.Text({:text=>mWords[index], :color=>Gfx.COLOR_WHITE, :font=>mFont, :locX=>Ui.LAYOUT_HALIGN_CENTER, :locY=>Ui.LAYOUT_VALIGN_CENTER});
+    }
 }
