@@ -3,6 +3,7 @@ using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Communications as Comm;
 var name, msg;
+var showNames = true;
 
 class Antonio_SMSView extends Ui.View {
 	
@@ -13,6 +14,7 @@ class Antonio_SMSView extends Ui.View {
     // Load your resources here
     function onLayout(dc) {
         Sys.println("Antonio - onLayout");
+        showNames = true;
         setLayout(Rez.Layouts.MainLayout(dc));
     }
 
@@ -44,18 +46,8 @@ class NameInputDelegate extends Ui.BehaviorDelegate {
     
 	function onSelect() {
         Sys.println("Antonio - onSelect");
-        var msgFactory = new WordFactory(["Yes", "No"          ], {:font=>Gfx.FONT_LARGE}); 
-        Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Msg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
-			:pattern=>[msgFactory],
-			:defaults=>[0]}),
-			new MsgPickerDelegate(),
-			Ui.SLIDE_UP);		
         var nameFactory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
-		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Name Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
-			:pattern=>[nameFactory],
-			:defaults=>[0]}),
-			new NamePickerDelegate(),
-			Ui.SLIDE_UP);
+		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Name Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[nameFactory], :defaults=>[0]}),	new NamePickerDelegate(), Ui.SLIDE_UP);
 		return true;
 	}
 }
@@ -66,6 +58,8 @@ class NamePickerDelegate extends Ui.PickerDelegate {
         Sys.println("Antonio - onAcceptN");
 		for(var i = 0; i < values.size(); i++) { name = values[i]; Sys.println(name); }
 		Ui.popView(Ui.SLIDE_DOWN);
+        var msgFactory = new WordFactory(["Yes", "No"          ], {:font=>Gfx.FONT_LARGE}); 
+   	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Msg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[msgFactory], :defaults=>[0]}), new MsgPickerDelegate(), Ui.SLIDE_UP);		
 		return true;
 	}
 	
@@ -90,7 +84,6 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
 	function onCancel() {
         Sys.println("Antonio - onCancelR");
 		Ui.popView(Ui.SLIDE_DOWN);
-		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
 	
@@ -99,7 +92,6 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
         if (responseCode == 200) {
         	Sys.println("Stock response data: " + data);
         }
-        requestUpdate();
     }	
 }
 
