@@ -44,9 +44,15 @@ class NameInputDelegate extends Ui.BehaviorDelegate {
     
 	function onSelect() {
         Sys.println("Antonio - onSelect");
-        var factory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
-		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"SMS Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
-			:pattern=>[factory],
+        var msgFactory = new WordFactory(["Yes", "No"          ], {:font=>Gfx.FONT_LARGE}); 
+        Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Msg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
+			:pattern=>[msgFactory],
+			:defaults=>[0]}),
+			new MsgPickerDelegate(),
+			Ui.SLIDE_UP);		
+        var nameFactory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
+		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Name Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
+			:pattern=>[nameFactory],
 			:defaults=>[0]}),
 			new NamePickerDelegate(),
 			Ui.SLIDE_UP);
@@ -59,12 +65,7 @@ class NamePickerDelegate extends Ui.PickerDelegate {
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptN");
 		for(var i = 0; i < values.size(); i++) { name = values[i]; Sys.println(name); }
-        var factory = new WordFactory(["Yes", "No"          ], {:font=>Gfx.FONT_LARGE}); 
-		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"SMS Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}),
-			:pattern=>[factory],
-			:defaults=>[0]}),
-			new RespPickerDelegate(),
-			Ui.SLIDE_UP);		
+		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
 	
@@ -75,15 +76,13 @@ class NamePickerDelegate extends Ui.PickerDelegate {
 	}
 }
 
-class RespPickerDelegate extends Ui.PickerDelegate {
+class MsgPickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptR");
 		for(var i = 0; i < values.size(); i++) { msg = values[i]; Sys.println(msg); }
 		Sys.println("Antonio - To: " + name + "; Msg: " + msg);
 		Comm.makeWebRequest("http://sms_test", {}, {}, method(:onSMSReceive));
-		
-		Ui.popView(Ui.SLIDE_DOWN);
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
