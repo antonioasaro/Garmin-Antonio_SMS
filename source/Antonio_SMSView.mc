@@ -2,8 +2,8 @@ using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Communications as Comm;
-var name, msg;
-var showNames = true;
+var name, mesg;
+var nameView, mesgView;
 
 class Antonio_SMSView extends Ui.View {
 	
@@ -14,7 +14,6 @@ class Antonio_SMSView extends Ui.View {
     // Load your resources here
     function onLayout(dc) {
         Sys.println("Antonio - onLayout");
-        showNames = true;
         setLayout(Rez.Layouts.MainLayout(dc));
     }
 
@@ -22,6 +21,9 @@ class Antonio_SMSView extends Ui.View {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() {
+        Sys.println("Antonio - onShow");
+        nameView = View.findDrawableById("id_name");
+        mesgView = View.findDrawableById("id_mesg");
     }
 
     // Update the view
@@ -56,7 +58,7 @@ class NamePickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptN");
-		for(var i = 0; i < values.size(); i++) { name = values[i]; Sys.println(name); }
+		for(var i = 0; i < values.size(); i++) { name = values[i]; }
 		Ui.popView(Ui.SLIDE_DOWN);
         var msgFactory = new WordFactory(["Yes", "No"          ], {:font=>Gfx.FONT_LARGE}); 
    	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Msg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[msgFactory], :defaults=>[0]}), new MsgPickerDelegate(), Ui.SLIDE_UP);		
@@ -74,9 +76,9 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptR");
-		for(var i = 0; i < values.size(); i++) { msg = values[i]; Sys.println(msg); }
-		Sys.println("Antonio - To: " + name + "; Msg: " + msg);
-		Comm.makeWebRequest("http://sms_test", {}, {}, method(:onSMSReceive));
+		for(var i = 0; i < values.size(); i++) { mesg = values[i]; }
+		Sys.println("Antonio - To: " + name + "; Msg: " + mesg);
+		Comm.makeWebRequest("http://ip.jsontest.com/" + name + "/" + mesg, {}, {}, method(:onSMSReceive));
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
@@ -90,8 +92,14 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
     function onSMSReceive(responseCode, data) {
         Sys.println("Antonio - onSMSReceive");
         if (responseCode == 200) {
-        	Sys.println("Stock response data: " + data);
+        	Sys.println("Response data: " + data);
+            nameView.setColor(Gfx.COLOR_WHITE);
+       		nameView.setText(name);	mesgView.setText(mesg);
+        } else {
+            nameView.setColor(Gfx.COLOR_RED);
+	       	nameView.setText("Failed"); mesgView.setText("-");
         }
+        requestUpdate();
     }	
 }
 
