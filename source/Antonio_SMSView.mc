@@ -48,6 +48,7 @@ class NameInputDelegate extends Ui.BehaviorDelegate {
     
 	function onSelect() {
         Sys.println("Antonio - onSelect");
+  		nameView.setText("-"); mesgView.setText("-");
         var nameFactory = new WordFactory(["Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
 		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Name Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[nameFactory], :defaults=>[0]}),	new NamePickerDelegate(), Ui.SLIDE_UP);
 		return true;
@@ -78,7 +79,8 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
         Sys.println("Antonio - onAcceptR");
 		for(var i = 0; i < values.size(); i++) { mesg = values[i]; }
 		Sys.println("Antonio - To: " + name + "; Msg: " + mesg);
-		Comm.makeWebRequest("http://ip.jsontest.com/" + name + "/" + mesg, {}, {}, method(:onSMSReceive));
+  		nameView.setText(name);	mesgView.setText(mesg);
+		Comm.openWebPage("http://SMS_Name_Mesg/" + name + "/" + mesg, {}, {});
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
@@ -88,19 +90,6 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
-	
-    function onSMSReceive(responseCode, data) {
-        Sys.println("Antonio - onSMSReceive");
-        if (responseCode == 200) {
-        	Sys.println("Response data: " + data);
-            nameView.setColor(Gfx.COLOR_WHITE);
-       		nameView.setText(name);	mesgView.setText(mesg);
-        } else {
-            nameView.setColor(Gfx.COLOR_RED);
-	       	nameView.setText("Failed"); mesgView.setText("-");
-        }
-        requestUpdate();
-    }	
 }
 
 //////////////////////////
