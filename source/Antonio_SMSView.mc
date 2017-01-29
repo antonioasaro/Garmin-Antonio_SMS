@@ -2,8 +2,8 @@ using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Communications as Comm;
-var name, mesg;
-var nameView, mesgView;
+var name, nameView;
+var mesg, mesgView;
 
 class Antonio_SMSView extends Ui.View {
 	
