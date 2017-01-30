@@ -49,7 +49,8 @@ class NameInputDelegate extends Ui.BehaviorDelegate {
 	function onSelect() {
         Sys.println("Antonio - onSelect");
   		nameView.setText("-"); mesgView.setText("-");
-        var nameFactory = new WordFactory(["Me", "Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
+        var nameFactory = new WordFactory(["Name1", "Name2", "Name3", "Name4"], {:font=>Gfx.FONT_MEDIUM});
+//       	var nameFactory = new WordFactory(["Me", "Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
 		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Name Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[nameFactory], :defaults=>[0]}),	new NamePickerDelegate(), Ui.SLIDE_UP);
 		return true;
 	}
@@ -61,7 +62,7 @@ class NamePickerDelegate extends Ui.PickerDelegate {
         Sys.println("Antonio - onAcceptN");
 		for(var i = 0; i < values.size(); i++) { name = values[i]; }
 		Ui.popView(Ui.SLIDE_DOWN);
-        var msgFactory = new WordFactory(["Yes", "No", "OK", "Busy"], {:font=>Gfx.FONT_LARGE}); 
+        var msgFactory = new WordFactory(["Yes", "No", "OK", "Busy"], {:font=>Gfx.FONT_MEDIUM}); 
    	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Msg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[msgFactory], :defaults=>[0]}), new MsgPickerDelegate(), Ui.SLIDE_UP);		
 		return true;
 	}
