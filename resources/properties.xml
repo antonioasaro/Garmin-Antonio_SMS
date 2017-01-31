@@ -1,0 +1,39 @@
+<resources>
+
+    <properties>
+        <property id="name0_prop" type="string">Me</property>
+        <property id="cell0_prop" type="string">14165551212</property>
+        <property id="name1_prop" type="string">Lori</property>
+        <property id="cell1_prop" type="string">19055551212</property>
+        <property id="name2_prop" type="string">Dave</property>
+        <property id="cell2_prop" type="string">16475551212</property>
+        <property id="name3_prop" type="string">Tim</property>
+        <property id="cell3_prop" type="string">12895551212</property>
+        <property id="mesg0_prop" type="string">Yes</property>
+        <property id="mesg1_prop" type="string">No</property>
+        <property id="mesg2_prop" type="string">OK</property>
+        <property id="mesg3_prop" type="string">Busy</property>
+    </properties>
+
+    <strings>
+       <string id="name_title">Name</string>
+       <string id="cell_title">Cellphone #</string>
+       <string id="mesg_title">Message</string>
+    </strings>
+
+    <settings>
+        <setting propertyKey="@Properties.name0_prop" title="@Strings.name_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.cell0_prop" title="@Strings.cell_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.name1_prop" title="@Strings.name_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.cell1_prop" title="@Strings.cell_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.name2_prop" title="@Strings.name_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.cell2_prop" title="@Strings.cell_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.name3_prop" title="@Strings.name_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.cell3_prop" title="@Strings.cell_title"><settingConfig type="alphaNumeric" /></setting>
+
+        <setting propertyKey="@Properties.mesg0_prop" title="@Strings.mesg_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.mesg1_prop" title="@Strings.mesg_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.mesg2_prop" title="@Strings.mesg_title"><settingConfig type="alphaNumeric" /></setting>
+        <setting propertyKey="@Properties.mesg3_prop" title="@Strings.mesg_title"><settingConfig type="alphaNumeric" /></setting>
+    </settings>
+</resources>

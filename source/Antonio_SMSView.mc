@@ -2,8 +2,12 @@ using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Communications as Comm;
+
 var name, nameView;
 var mesg, mesgView;
+var nameList = new[4];
+var cellList = new[4];
+var mesgList = new[4];
 
 class Antonio_SMSView extends Ui.View {
 	
@@ -28,6 +32,20 @@ class Antonio_SMSView extends Ui.View {
 
     // Update the view
     function onUpdate(dc) {
+    	nameList[0] = Application.getApp().getProperty("name0_prop"); 
+		cellList[0] = Application.getApp().getProperty("cell0_prop");
+		nameList[1] = Application.getApp().getProperty("name1_prop"); 
+		cellList[1] = Application.getApp().getProperty("cell1_prop");
+		nameList[2] = Application.getApp().getProperty("name2_prop"); 
+		cellList[2] = Application.getApp().getProperty("cell2_prop");
+		nameList[3] = Application.getApp().getProperty("name3_prop"); 
+		cellList[3] = Application.getApp().getProperty("cell3_prop");
+
+		mesgList[0] = Application.getApp().getProperty("mesg0_prop");
+		mesgList[1] = Application.getApp().getProperty("mesg1_prop");
+		mesgList[2] = Application.getApp().getProperty("mesg2_prop");
+		mesgList[3] = Application.getApp().getProperty("mesg3_prop");
+    
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
     }
@@ -49,8 +67,7 @@ class NameInputDelegate extends Ui.BehaviorDelegate {
 	function onSelect() {
         Sys.println("Antonio - onSelect");
   		nameView.setText("-"); mesgView.setText("-");
-//        var nameFactory = new WordFactory(["Name1", "Name2", "Name3", "Name4"], {:font=>Gfx.FONT_MEDIUM});
-       	var nameFactory = new WordFactory(["Me", "Lori", "Dave", "Tim"], {:font=>Gfx.FONT_LARGE});
+       	var nameFactory = new WordFactory([nameList[0], nameList[1], nameList[2], nameList[3]], {:font=>Gfx.FONT_LARGE});
 		Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Name Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[nameFactory], :defaults=>[0]}),	new NamePickerDelegate(), Ui.SLIDE_UP);
 		return true;
 	}
@@ -60,11 +77,10 @@ class NamePickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptN");
-		for(var i = 0; i < values.size(); i++) { name = values[i]; }
+		for (var i = 0; i < values.size(); i++) { name = values[i]; }
 		Ui.popView(Ui.SLIDE_DOWN);
-//        var msgFactory = new WordFactory(["Yes", "No", "OK", "Busy"], {:font=>Gfx.FONT_MEDIUM}); 
-        var msgFactory = new WordFactory(["Yes", "No", "OK", "Busy"], {:font=>Gfx.FONT_LARGE}); 
-   	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Msg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[msgFactory], :defaults=>[0]}), new MsgPickerDelegate(), Ui.SLIDE_UP);		
+        var msgFactory = new WordFactory([mesgList[0], mesgList[1], mesgList[2], mesgList[3]], {:font=>Gfx.FONT_LARGE}); 
+   	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Mesg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[msgFactory], :defaults=>[0]}), new MsgPickerDelegate(), Ui.SLIDE_UP);		
 		return true;
 	}
 	
@@ -79,10 +95,13 @@ class MsgPickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptR");
-		for(var i = 0; i < values.size(); i++) { mesg = values[i]; }
-		Sys.println("Antonio - To: " + name + "; Msg: " + mesg);
+        var cell = "";
+		for (var i = 0; i < values.size(); i++) { mesg = values[i]; }
+		for (var j = 0; j < 4; j++) { if (mesg == mesgList[j]) { cell = cellList[j]; break; } }
   		nameView.setText(name);	mesgView.setText(mesg);
-		Comm.openWebPage("http://SMS_Name_Mesg/" + name + "/" + mesg, {}, {});
+
+		Sys.println("Antonio - To: " + name + ", cell: " + cell + ", mesg: " + mesg);
+		Comm.openWebPage("http://SMS_Name_Mesg/" + name + "/" + cell + "/" + mesg, {}, {});
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
 	}
