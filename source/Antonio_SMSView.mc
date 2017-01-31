@@ -79,8 +79,8 @@ class NamePickerDelegate extends Ui.PickerDelegate {
         Sys.println("Antonio - onAcceptN");
 		for (var i = 0; i < values.size(); i++) { name = values[i]; }
 		Ui.popView(Ui.SLIDE_DOWN);
-        var msgFactory = new WordFactory([mesgList[0], mesgList[1], mesgList[2], mesgList[3]], {:font=>Gfx.FONT_LARGE}); 
-   	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Mesg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[msgFactory], :defaults=>[0]}), new MsgPickerDelegate(), Ui.SLIDE_UP);		
+        var mesgFactory = new WordFactory([mesgList[0], mesgList[1], mesgList[2], mesgList[3]], {:font=>Gfx.FONT_LARGE}); 
+   	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Mesg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[mesgFactory], :defaults=>[0]}), new mesgPickerDelegate(), Ui.SLIDE_UP);		
 		return true;
 	}
 	
@@ -91,7 +91,7 @@ class NamePickerDelegate extends Ui.PickerDelegate {
 	}
 }
 
-class MsgPickerDelegate extends Ui.PickerDelegate {
+class mesgPickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptR");
