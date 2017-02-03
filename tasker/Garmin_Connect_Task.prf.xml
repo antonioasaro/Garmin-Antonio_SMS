@@ -2,7 +2,7 @@
 	<Profile sr="prof3" ve="2">
 		<cdate>1485559114865</cdate>
 		<clp>true</clp>
-		<edate>1485832527533</edate>
+		<edate>1486080054097</edate>
 		<id>3</id>
 		<mid0>2</mid0>
 		<nme>Garmin Connect Task</nme>
@@ -201,7 +201,7 @@ Show When
 	</Profile>
 	<Task sr="task2">
 		<cdate>1481858454806</cdate>
-		<edate>1485832527533</edate>
+		<edate>1486080054097</edate>
 		<id>2</id>
 		<pri>100</pri>
 		<Action sr="act0" ve="7">
@@ -305,7 +305,7 @@ Only available if you select &amp;lt;b&amp;gt;Continue Task After Error&amp;lt;/
 		</Action>
 		<Action sr="act4" ve="7">
 			<code>548</code>
-			<Str sr="arg0" ve="3">SMS %antext22 %antext24</Str>
+			<Str sr="arg0" ve="3">SMS %antext22 (%antext23) %antext24</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
 		<Action sr="act5" ve="7">

@@ -3,6 +3,7 @@ using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Communications as Comm;
 
+var cell;
 var name, nameView;
 var mesg, mesgView;
 var nameList = new[4];
@@ -78,6 +79,7 @@ class NamePickerDelegate extends Ui.PickerDelegate {
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptN");
 		for (var i = 0; i < values.size(); i++) { name = values[i]; }
+		for (var j = 0; j < 4; j++) { if (name == nameList[j]) { cell = cellList[j]; break; } }
 		Ui.popView(Ui.SLIDE_DOWN);
         var mesgFactory = new WordFactory([mesgList[0], mesgList[1], mesgList[2], mesgList[3]], {:font=>Gfx.FONT_LARGE}); 
    	    Ui.pushView(new Ui.Picker({:title=>new Ui.Text({:text=>"Mesg Picker", :locX =>Ui.LAYOUT_HALIGN_CENTER}), :pattern=>[mesgFactory], :defaults=>[0]}), new mesgPickerDelegate(), Ui.SLIDE_UP);		
@@ -95,12 +97,9 @@ class mesgPickerDelegate extends Ui.PickerDelegate {
 
 	function onAccept(values) {
         Sys.println("Antonio - onAcceptR");
-        var cell = "";
 		for (var i = 0; i < values.size(); i++) { mesg = values[i]; }
-		for (var j = 0; j < 4; j++) { if (mesg == mesgList[j]) { cell = cellList[j]; break; } }
   		nameView.setText(name);	mesgView.setText(mesg);
-
-		Sys.println("Antonio - To: " + name + ", cell: " + cell + ", mesg: " + mesg);
+		Sys.println("Antonio - SMS " + name + "(" + cell + ") " + mesg);
 		Comm.openWebPage("http://SMS_Name_Mesg/" + name + "/" + cell + "/" + mesg, {}, {});
 		Ui.popView(Ui.SLIDE_DOWN);
 		return true;
