@@ -2,14 +2,22 @@
     <iq:application entry="Antonio_SMSApp" id="03D6A12AEA504D108C7E30DAB38A98FE" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="1.4.0" name="@Strings.AppName" type="widget">
 
         <iq:products>
-            <iq:product id="fr230"/>
-            <iq:product id="fr235"/>
             <iq:product id="fr630"/>
+            <iq:product id="fr235"/>
             <iq:product id="fr735xt"/>
+            <iq:product id="fr230"/>
+            <iq:product id="vivoactive"/>
+            <iq:product id="fenix3"/>
+            <iq:product id="fenix3_hr"/>
+            <iq:product id="fenixchronos"/>
+            <iq:product id="d2bravo"/>
+            <iq:product id="d2bravo_titanium"/>
+            <iq:product id="fr920xt"/>
+            <iq:product id="vivoactive_hr"/>
         </iq:products>
 
         <iq:permissions>
-            <iq:uses-permission id="Communications"/>              
+            <iq:uses-permission id="Communications"/>
         </iq:permissions>
 
         <iq:languages>
